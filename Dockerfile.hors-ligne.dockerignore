@@ -1,0 +1,6 @@
+# Fichier d'exclusion propre à Dockerfile.hors-ligne :
+# contrairement à .dockerignore, on GARDE backend/node_modules.
+**/.env
+.git
+*.zip
+README.md

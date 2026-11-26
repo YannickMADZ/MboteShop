@@ -1,0 +1,26 @@
+# Lancement local : docker compose up --build
+# -> boutique : http://localhost:3000   dashboard : http://localhost:3000/admin.html
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db          # les données survivent à l'arrêt des conteneurs
+    ports:
+      - "27017:27017"                # optionnel : pour ouvrir la base avec MongoDB Compass
+
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      # Par défaut : MongoDB local (conteneur "mongo").
+      # Pour utiliser Atlas en local, définir MONGODB_URI dans un fichier .env à la racine.
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/mbote_shop}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:

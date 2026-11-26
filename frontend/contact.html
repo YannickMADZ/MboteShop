@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contactez l'équipe MbotéShop.">
+  <title>Contact — MbotéShop</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Applique le thème sauvegardé avant l'affichage (évite un flash blanc) -->
+  <script>
+    try { const t = JSON.parse(localStorage.getItem("mbote_theme")); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">Mboté<span>Shop</span></a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <a href="produits.html">Produits</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html" class="actif" aria-current="page">Contact</a>
+        <a href="wishlist.html" class="nav-mobile">Wishlist</a>
+        <a href="panier.html" class="nav-mobile">Panier</a>
+      </nav>
+
+      <div class="header__actions">
+        <button type="button" class="icon-btn" id="btn-theme" aria-label="Activer / désactiver le mode sombre"><span data-icone="lune"></span></button>
+        <a href="wishlist.html" class="icon-btn" aria-label="Voir ma wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="badge vide" id="badge-wishlist">0</span>
+        </a>
+        <a href="panier.html" class="icon-btn" aria-label="Voir mon panier">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="badge vide" id="badge-panier">0</span>
+        </a>
+        <button type="button" class="icon-btn menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false"><span data-icone="menu"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-titre">
+      <h1>Contactez-nous</h1>
+      <p>Une question sur un produit ou une commande ? Écrivez-nous, nous répondons sous 24 h.</p>
+    </div>
+
+    <div class="contact-layout">
+      <div class="contact-infos">
+        <div class="avantage"><span class="emoji" data-icone="lieu"></span><h3>Adresse</h3><p>Avenue de la Paix, Brazzaville, République du Congo</p></div>
+        <div class="avantage"><span class="emoji" data-icone="telephone"></span><h3>Téléphone</h3><p>+242 06 000 00 00</p></div>
+        <div class="avantage"><span class="emoji" data-icone="horloge"></span><h3>Horaires</h3><p>Lundi – samedi, 8 h – 19 h</p></div>
+      </div>
+
+      <div class="commande contact-carte">
+        <form id="form-contact" novalidate>
+          <h2>Envoyer un message</h2>
+          <div class="form-grille">
+            <div class="form-groupe">
+              <label for="c-nom">Nom *</label>
+              <input class="champ" id="c-nom" name="nom" autocomplete="name" maxlength="100">
+              <span class="erreur-champ" id="erreur-nom"></span>
+            </div>
+            <div class="form-groupe">
+              <label for="c-email">Email *</label>
+              <input class="champ" id="c-email" name="email" type="email" autocomplete="email">
+              <span class="erreur-champ" id="erreur-email"></span>
+            </div>
+            <div class="form-groupe plein">
+              <label for="c-sujet">Sujet</label>
+              <input class="champ" id="c-sujet" name="sujet" maxlength="150" placeholder="Ex : Question sur ma commande">
+            </div>
+            <div class="form-groupe plein">
+              <label for="c-message">Message *</label>
+              <textarea class="champ" id="c-message" name="message" rows="6" maxlength="3000"></textarea>
+              <span class="erreur-champ" id="erreur-message"></span>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="btn-envoyer">Envoyer le message</button>
+        </form>
+
+        <div class="message-vide cache" id="contact-confirmation">
+          <span class="emoji" data-icone="valide"></span>
+          <p>Merci ! Votre message a bien été envoyé. Nous vous répondrons rapidement.</p>
+          <button type="button" class="btn btn-outline" id="nouveau-message">Envoyer un autre message</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>Livraison à Brazzaville, Pointe-Noire, Dolisie et partout au Congo.</p>
+      <p><a href="contact.html">Contact</a> · <a href="blog.html">Blog</a> · <a href="admin.html">Administration</a></p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/commun.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>

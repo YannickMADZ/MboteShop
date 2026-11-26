@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Dashboard — MbotéShop</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    try { const t = JSON.parse(localStorage.getItem("mbote_theme")); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body class="admin">
+
+  <!-- ================= Écran d'accès ================= -->
+  <section class="acces" id="ecran-acces">
+    <form class="acces__boite" id="form-acces">
+      <a href="index.html" class="logo">Mboté<span>Shop</span></a>
+      <h1>Espace administration</h1>
+      <p>Entrez le code d'accès pour gérer la boutique.</p>
+      <label for="code-acces" class="sr-only">Code d'accès</label>
+      <input class="champ" type="password" id="code-acces" placeholder="Code d'accès" autocomplete="off" required>
+      <p class="message-form erreur" id="erreur-acces"></p>
+      <button type="submit" class="btn btn-primary btn-block">Accéder au dashboard</button>
+      <p class="astuce">Code de démonstration : <strong>mbote2026</strong> (modifiable dans js/config.js)</p>
+    </form>
+  </section>
+
+  <!-- ================= Dashboard ================= -->
+  <div class="dashboard cache" id="dashboard">
+    <aside class="sidebar">
+      <a href="index.html" class="logo">Mboté<span>Shop</span></a>
+      <nav class="sidebar__nav" aria-label="Sections du dashboard">
+        <button type="button" class="sidebar__lien actif" data-section="accueil"><span data-icone="graphique"></span> <span>Vue d'ensemble</span></button>
+        <button type="button" class="sidebar__lien" data-section="produits"><span data-icone="sac"></span> <span>Produits</span></button>
+        <button type="button" class="sidebar__lien" data-section="commandes"><span data-icone="colis"></span> <span>Commandes</span></button>
+        <button type="button" class="sidebar__lien" data-section="articles"><span data-icone="document"></span> <span>Blog</span></button>
+        <button type="button" class="sidebar__lien" data-section="messages"><span data-icone="email"></span> <span>Messages</span><span class="pastille cache" id="pastille-messages">0</span></button>
+      </nav>
+      <div class="sidebar__bas">
+        <a href="index.html" class="sidebar__lien" target="_blank" rel="noopener"><span data-icone="externe"></span> <span>Voir la boutique</span></a>
+        <button type="button" class="sidebar__lien" id="btn-theme" aria-label="Mode sombre"><span data-icone="lune"></span></button>
+        <button type="button" class="sidebar__lien" id="btn-deconnexion"><span data-icone="sortie"></span> <span>Quitter</span></button>
+      </div>
+    </aside>
+
+    <main class="contenu">
+      <!-- ---------- Vue d'ensemble ---------- -->
+      <section class="panneau actif" id="section-accueil">
+        <header class="panneau__entete">
+          <div><h1>Vue d'ensemble</h1><p>Activité de la boutique.</p></div>
+          <button type="button" class="btn btn-outline btn-sm" data-rafraichir="accueil"><span data-icone="actualiser"></span> Actualiser</button>
+        </header>
+        <div class="stats">
+          <div class="stat"><span>Chiffre d'affaires</span><strong id="stat-ca">—</strong><small>hors commandes annulées</small></div>
+          <div class="stat"><span>Commandes</span><strong id="stat-commandes">—</strong><small id="stat-attente"></small></div>
+          <div class="stat"><span>Produits</span><strong id="stat-produits">—</strong><small>au catalogue</small></div>
+          <div class="stat"><span>Messages non lus</span><strong id="stat-messages">—</strong><small id="stat-articles"></small></div>
+        </div>
+        <h2 class="sous-titre">Dernières commandes</h2>
+        <div class="tableau-conteneur">
+          <table class="tableau">
+            <thead><tr><th>N°</th><th>Date</th><th>Client</th><th>Total</th><th>Statut</th></tr></thead>
+            <tbody id="tbody-dernieres"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------- Produits ---------- -->
+      <section class="panneau" id="section-produits">
+        <header class="panneau__entete">
+          <div><h1>Produits</h1><p id="compteur-produits"></p></div>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-nouveau-produit">+ Nouveau produit</button>
+        </header>
+        <div class="barre-outils">
+          <input class="champ" type="search" id="recherche-produits" placeholder="Rechercher un produit…">
+          <select class="champ" id="filtre-categorie-produits"><option value="">Toutes les catégories</option></select>
+        </div>
+        <div class="tableau-conteneur">
+          <table class="tableau">
+            <thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Vedette</th><th class="a-droite">Actions</th></tr></thead>
+            <tbody id="tbody-produits"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------- Commandes ---------- -->
+      <section class="panneau" id="section-commandes">
+        <header class="panneau__entete">
+          <div><h1>Commandes</h1><p id="compteur-commandes"></p></div>
+          <button type="button" class="btn btn-outline btn-sm" data-rafraichir="commandes"><span data-icone="actualiser"></span> Actualiser</button>
+        </header>
+        <div class="barre-outils">
+          <select class="champ" id="filtre-statut"><option value="">Tous les statuts</option></select>
+        </div>
+        <div class="tableau-conteneur">
+          <table class="tableau">
+            <thead><tr><th>N°</th><th>Date</th><th>Client</th><th>Ville</th><th>Total</th><th>Statut</th><th class="a-droite">Actions</th></tr></thead>
+            <tbody id="tbody-commandes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------- Articles ---------- -->
+      <section class="panneau" id="section-articles">
+        <header class="panneau__entete">
+          <div><h1>Articles du blog</h1><p id="compteur-articles"></p></div>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-nouvel-article">+ Nouvel article</button>
+        </header>
+        <div class="tableau-conteneur">
+          <table class="tableau">
+            <thead><tr><th>Article</th><th>Auteur</th><th>Date</th><th>État</th><th class="a-droite">Actions</th></tr></thead>
+            <tbody id="tbody-articles"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------- Messages ---------- -->
+      <section class="panneau" id="section-messages">
+        <header class="panneau__entete">
+          <div><h1>Messages de contact</h1><p id="compteur-messages"></p></div>
+          <button type="button" class="btn btn-outline btn-sm" data-rafraichir="messages"><span data-icone="actualiser"></span> Actualiser</button>
+        </header>
+        <div class="barre-outils">
+          <select class="champ" id="filtre-messages">
+            <option value="">Tous les messages</option>
+            <option value="false">Non lus</option>
+            <option value="true">Lus</option>
+          </select>
+        </div>
+        <div class="tableau-conteneur">
+          <table class="tableau">
+            <thead><tr><th></th><th>Expéditeur</th><th>Sujet</th><th>Date</th><th class="a-droite">Actions</th></tr></thead>
+            <tbody id="tbody-messages"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ================= Fenêtres (dialog) ================= -->
+  <dialog class="fenetre" id="dialog-produit">
+    <form id="form-produit" class="fenetre__form">
+      <h2 id="titre-form-produit">Nouveau produit</h2>
+      <div class="form-grille">
+        <div class="form-groupe plein">
+          <label for="p-nom">Nom *</label>
+          <input class="champ" id="p-nom" name="nom" required maxlength="100">
+        </div>
+        <div class="form-groupe">
+          <label for="p-prix">Prix (FCFA) *</label>
+          <input class="champ" id="p-prix" name="prix" type="number" min="0" step="1" required>
+        </div>
+        <div class="form-groupe">
+          <label for="p-categorie">Catégorie *</label>
+          <select class="champ" id="p-categorie" name="categorie" required></select>
+        </div>
+        <div class="form-groupe plein">
+          <label for="p-image">Image (chemin ou URL)</label>
+          <div class="champ-image">
+            <input class="champ" id="p-image" name="image" placeholder="https://images.unsplash.com/… ou images/mon-produit.jpg">
+            <img id="apercu-image" src="images/placeholder.svg" alt="Aperçu">
+          </div>
+        </div>
+        <div class="form-groupe plein">
+          <label for="p-description">Description</label>
+          <textarea class="champ" id="p-description" name="description" rows="3" maxlength="1000"></textarea>
+        </div>
+        <label class="case plein"><input type="checkbox" name="vedette"> Afficher dans les « Coups de cœur » de l'accueil</label>
+      </div>
+      <p class="message-form erreur" id="erreur-form-produit"></p>
+      <div class="fenetre__actions">
+        <button type="button" class="btn btn-outline" data-fermer>Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="fenetre" id="dialog-article">
+    <form id="form-article" class="fenetre__form">
+      <h2 id="titre-form-article">Nouvel article</h2>
+      <div class="form-grille">
+        <div class="form-groupe plein">
+          <label for="a-titre">Titre *</label>
+          <input class="champ" id="a-titre" name="titre" required maxlength="150">
+        </div>
+        <div class="form-groupe">
+          <label for="a-auteur">Auteur</label>
+          <input class="champ" id="a-auteur" name="auteur" placeholder="L'équipe MbotéShop">
+        </div>
+        <div class="form-groupe">
+          <label for="a-image">Image (chemin ou URL)</label>
+          <input class="champ" id="a-image" name="image" placeholder="https://… ou images/…">
+        </div>
+        <div class="form-groupe plein">
+          <label for="a-resume">Résumé</label>
+          <textarea class="champ" id="a-resume" name="resume" rows="2" maxlength="300"></textarea>
+        </div>
+        <div class="form-groupe plein">
+          <label for="a-contenu">Contenu * <small>(séparez les paragraphes par une ligne vide)</small></label>
+          <textarea class="champ" id="a-contenu" name="contenu" rows="9" required></textarea>
+        </div>
+        <label class="case plein"><input type="checkbox" name="publie" checked> Publié (visible sur le site)</label>
+      </div>
+      <p class="message-form erreur" id="erreur-form-article"></p>
+      <div class="fenetre__actions">
+        <button type="button" class="btn btn-outline" data-fermer>Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="fenetre" id="dialog-details">
+    <div class="fenetre__form">
+      <div id="contenu-details"></div>
+      <div class="fenetre__actions">
+        <button type="button" class="btn btn-primary" data-fermer>Fermer</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/config.js"></script>
+  <script src="js/commun.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

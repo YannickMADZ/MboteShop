@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Votre panier MbotéShop.">
+  <title>Mon panier — MbotéShop</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Applique le thème sauvegardé avant l'affichage (évite un flash blanc) -->
+  <script>
+    try { const t = JSON.parse(localStorage.getItem("mbote_theme")); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">Mboté<span>Shop</span></a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <a href="produits.html">Produits</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="wishlist.html" class="nav-mobile">Wishlist</a>
+        <a href="panier.html" class="nav-mobile" class="actif" aria-current="page">Panier</a>
+      </nav>
+
+      <div class="header__actions">
+        <button type="button" class="icon-btn" id="btn-theme" aria-label="Activer / désactiver le mode sombre"><span data-icone="lune"></span></button>
+        <a href="wishlist.html" class="icon-btn" aria-label="Voir ma wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="badge vide" id="badge-wishlist">0</span>
+        </a>
+        <a href="panier.html" class="icon-btn" aria-label="Voir mon panier">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="badge vide" id="badge-panier">0</span>
+        </a>
+        <button type="button" class="icon-btn menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false"><span data-icone="menu"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-titre">
+      <h1>Mon panier</h1>
+      <p id="panier-compteur"></p>
+    </div>
+
+    <!-- Message affiché si le panier est vide -->
+    <div class="message-vide cache" id="panier-vide">
+      <span class="emoji" data-icone="panier"></span>
+      <p>Votre panier est vide.</p>
+      <a href="produits.html" class="btn btn-primary">Découvrir nos produits</a>
+    </div>
+
+    <div class="panier-layout" id="zone-panier">
+      <div>
+        <div class="panier-tableau">
+          <div class="panier-entete">
+            <span>Produit</span><span>Prix</span><span>Quantité</span><span>Total</span><span>Action</span>
+          </div>
+          <!-- Lignes générées en JavaScript -->
+          <div id="liste-panier"></div>
+          <div class="panier-pied">
+            <a href="produits.html" class="btn btn-outline btn-sm">← Continuer mes achats</a>
+            <button type="button" class="btn btn-danger-outline btn-sm" id="vider-panier">Vider le panier</button>
+          </div>
+        </div>
+
+        <!-- Formulaire de livraison -->
+        <form class="commande" id="form-livraison" novalidate>
+          <h2>Informations de livraison</h2>
+          <div class="form-grille">
+            <div class="form-groupe">
+              <label for="nom">Nom complet</label>
+              <input class="champ" type="text" id="nom" name="nom" autocomplete="name" placeholder="Ex : Grâce Mabiala">
+              <span class="erreur-champ" id="erreur-nom"></span>
+            </div>
+            <div class="form-groupe">
+              <label for="telephone">Téléphone</label>
+              <input class="champ" type="tel" id="telephone" name="telephone" autocomplete="tel" placeholder="Ex : 06 123 45 67">
+              <span class="erreur-champ" id="erreur-telephone"></span>
+            </div>
+            <div class="form-groupe plein">
+              <label for="adresse">Adresse de livraison</label>
+              <input class="champ" type="text" id="adresse" name="adresse" autocomplete="street-address" placeholder="Quartier, rue, numéro, point de repère">
+              <span class="erreur-champ" id="erreur-adresse"></span>
+            </div>
+            <div class="form-groupe">
+              <label for="ville">Ville</label>
+              <select class="champ" id="ville" name="ville">
+                <option value="">— Choisir —</option>
+                <option value="Brazzaville">Brazzaville (2 000 FCFA)</option>
+                <option value="Pointe-Noire">Pointe-Noire (3 500 FCFA)</option>
+                <option value="Dolisie">Dolisie (4 000 FCFA)</option>
+                <option value="Autre ville">Autre ville (5 000 FCFA)</option>
+              </select>
+              <span class="erreur-champ" id="erreur-ville"></span>
+            </div>
+            <fieldset class="form-groupe plein">
+              <legend>Mode de paiement</legend>
+              <div class="paiements">
+                <label class="paiement"><input type="radio" name="paiement" value="Paiement à la livraison" checked> <span data-icone="billet"></span> À la livraison</label>
+                <label class="paiement"><input type="radio" name="paiement" value="Mobile Money"> <span data-icone="mobile"></span> Mobile Money</label>
+                <label class="paiement"><input type="radio" name="paiement" value="Carte bancaire"> <span data-icone="carte"></span> Carte bancaire</label>
+              </div>
+            </fieldset>
+          </div>
+        </form>
+      </div>
+
+      <!-- Récapitulatif -->
+      <aside class="recap" aria-label="Récapitulatif de la commande">
+        <h2>Récapitulatif</h2>
+        <div class="recap-ligne"><span>Articles</span><strong id="recap-articles">0</strong></div>
+        <div class="recap-ligne"><span>Sous-total</span><strong id="recap-sous-total">0 FCFA</strong></div>
+        <div class="recap-ligne cache" id="ligne-remise"><span>Remise</span><strong id="recap-remise"></strong></div>
+        <div class="recap-ligne"><span>Livraison</span><strong id="recap-livraison"></strong></div>
+        <p class="info-livraison" id="info-livraison"></p>
+
+        <form class="promo" id="form-promo">
+          <label for="code-promo" class="sr-only">Code promo</label>
+          <input class="champ" type="text" id="code-promo" placeholder="Code promo" autocomplete="off">
+          <button type="submit" class="btn btn-outline btn-sm">Appliquer</button>
+        </form>
+        <p class="message-form" id="message-promo" aria-live="polite"></p>
+        <p class="astuce">Codes de test : BIENVENUE10 · MBOTE5000 · LIVRAISONOFFERTE</p>
+
+        <div class="recap-total"><span>Total à payer</span><span id="recap-total">0 FCFA</span></div>
+        <button type="submit" form="form-livraison" class="btn btn-primary btn-block" id="btn-commander">Confirmer la commande</button>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Modale de confirmation de commande -->
+  <div class="modal" id="modal-commande" role="dialog" aria-modal="true" aria-labelledby="modal-titre">
+    <div class="modal__boite">
+      <span class="emoji" data-icone="valide"></span>
+      <h2 id="modal-titre">Commande confirmée !</h2>
+      <p id="modal-texte"></p>
+      <div class="modal__recap" id="modal-recap"></div>
+      <div class="modal__actions">
+        <a href="produits.html" class="btn btn-primary btn-block">Continuer mes achats</a>
+        <button type="button" class="btn btn-outline btn-block" data-fermer>Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>Livraison à Brazzaville, Pointe-Noire, Dolisie et partout au Congo.</p>
+      <p><a href="contact.html">Contact</a> · <a href="blog.html">Blog</a> · <a href="admin.html">Administration</a></p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/commun.js"></script>
+  <script src="js/panier.js"></script>
+</body>
+</html>

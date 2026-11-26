@@ -1,0 +1,12 @@
+# Blueprint Render : New + → Blueprint → choisir ce dépôt GitHub
+services:
+  - type: web
+    name: mbote-shop
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/sante
+    autoDeploy: true
+    envVars:
+      - key: MONGODB_URI
+        sync: false   # Render demandera la valeur (chaîne de connexion Atlas)

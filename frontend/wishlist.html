@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vos produits favoris sur MbotéShop.">
+  <title>Ma Wishlist — MbotéShop</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Applique le thème sauvegardé avant l'affichage (évite un flash blanc) -->
+  <script>
+    try { const t = JSON.parse(localStorage.getItem("mbote_theme")); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">Mboté<span>Shop</span></a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <a href="produits.html">Produits</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="wishlist.html" class="nav-mobile" class="actif" aria-current="page">Wishlist</a>
+        <a href="panier.html" class="nav-mobile">Panier</a>
+      </nav>
+
+      <div class="header__actions">
+        <button type="button" class="icon-btn" id="btn-theme" aria-label="Activer / désactiver le mode sombre"><span data-icone="lune"></span></button>
+        <a href="wishlist.html" class="icon-btn" aria-label="Voir ma wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="badge vide" id="badge-wishlist">0</span>
+        </a>
+        <a href="panier.html" class="icon-btn" aria-label="Voir mon panier">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="badge vide" id="badge-panier">0</span>
+        </a>
+        <button type="button" class="icon-btn menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false"><span data-icone="menu"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-titre titre-avec-action">
+      <div>
+        <h1>Ma Wishlist</h1>
+        <p id="wishlist-compteur"></p>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm cache" id="tout-ajouter">Tout ajouter au panier</button>
+    </div>
+
+    <div class="message-vide cache" id="wishlist-vide">
+      <span class="emoji" data-icone="coeur"></span>
+      <p>Votre wishlist est vide.</p>
+      <a href="produits.html" class="btn btn-primary">Parcourir les produits</a>
+    </div>
+
+    <div class="grille-produits" id="grille-wishlist"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>Livraison à Brazzaville, Pointe-Noire, Dolisie et partout au Congo.</p>
+      <p><a href="contact.html">Contact</a> · <a href="blog.html">Blog</a> · <a href="admin.html">Administration</a></p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/commun.js"></script>
+  <script src="js/wishlist.js"></script>
+</body>
+</html>
